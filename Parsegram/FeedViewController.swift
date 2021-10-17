@@ -76,6 +76,27 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         delegate.window?.rootViewController = loginViewController
     }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let post = posts[indexPath.section]
+        
+        let comment = PFObject(className:"Comments")
+        
+        comment["text"] = "this is a random comment"
+        comment["post"] = post
+        comment["author"] = PFUser.current()!
+        
+        post.add(comment, forKey: "comments")
+        post.saveInBackground { (success, error) in
+            if success{
+                print("Comment Saved")
+            }else{
+                print("Error Saving Comment")
+            }
+        }
+    }
+    
     /*
     // MARK: - Navigation
 
